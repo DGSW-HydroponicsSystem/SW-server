@@ -1,2 +1,2 @@
 # SW-server
-DGSW-Smart_Farm_Server
+수경재배 시스템 서버 코드 레포지토리입니다.
