@@ -8,13 +8,13 @@ class MQTT:
     self.port = 1883
     self.topic = 'smartfarm_v2/sensor'
     self.client = None
-    
+
     # sensor Value
     self.temp = None
     self.humidity = None
     self.led_status = None
     self.water_status = None
-    
+
   def connect_mqtt(self) -> mqtt:
     def on_connect(client, userdata, flags, rc):
       if rc == 0:
@@ -40,7 +40,7 @@ class MQTT:
         print('no data...')
     client.subscribe(self.topic)
     client.on_message = on_message
-    
+
   def run(self):
     self.client = self.connect_mqtt()
     self.subscribe(self.client)
@@ -48,7 +48,7 @@ class MQTT:
     print('run!!')
     time.sleep(1)
     self.get_data()
-    
+
   def get_data(self):
     if self.temp == None and self.humidity == None and self.led_status == None and self.water_status == None:
       returnValue = {
@@ -58,6 +58,7 @@ class MQTT:
         'water_status': 0
       }
       return returnValue
+
     else:
       returnValue = {
         'temp': self.temp,
