@@ -6,11 +6,11 @@ from .MQTT.publish import *
 from .MQTT.subscribe import *
 
 from .__init__ import recv
-senserValue = recv()
 
 @method_decorator(csrf_exempt, name='dispatch')
 class get_all_sensor(View):
   def get(self, request):
+    senserValue = recv()
     returnValue = {
       'temp': {
         'status': 0,  # -1 or 0 or 1 센서 값에 따라 부족, 적당, 높음의 기준을 나눔
@@ -43,6 +43,7 @@ class get_all_sensor(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class temp(View):
   def get(self, request):
+    senserValue = recv()
     returnValue = {
       'status': 0,
       'value': senserValue['temp']
@@ -52,6 +53,7 @@ class temp(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class humidity(View):
   def get(self, request):
+    senserValue = recv()
     returnValue = {
       'status': 0,
       'value': senserValue['humidity']
@@ -61,6 +63,7 @@ class humidity(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class led(View):
   def get(self, request):
+    senserValue = recv()
     returnValue = {
       'value': senserValue['led_status']
     }
@@ -69,6 +72,7 @@ class led(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class water(View):
   def get(self, request):
+    senserValue = recv()
     returnValue = {
       'value': senserValue['water_status']
     }

@@ -1,7 +1,7 @@
 from .MQTT import subscribe as mqtt
 
 mqtt = mqtt.MQTT()
-sensorValue = mqtt.run()
 
 def recv():
+  sensorValue = mqtt.run()
   return sensorValue
