@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 app_name = 'v2'
-urlpatten = [
+urlpatterns = [
   path('get_all_sensor/', views.get_all_sensor.as_view(), name='index'),
   path('humidity/', views.humidity.as_view(), name='index'),
   path('temp/', views.temp.as_view(), name='index'),
