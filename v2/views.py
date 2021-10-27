@@ -13,31 +13,31 @@ class get_all_sensor(View):
     senserValue = recv()
     returnValue = {
       'temp': {
-        'status': 0,  # -1 or 0 or 1 센서 값에 따라 부족, 적당, 높음의 기준을 나눔
+        'status': senserValue['temp_status'],  # -1 or 0 or 1 센서 값에 따라 부족, 적당, 높음의 기준을 나눔
         'value': senserValue['temp']
       },
       'humidity': {
-        'status': 0,
+        'status': senserValue['humidity_status'],
         'value': senserValue['humidity']
       }
     }
-    
+
     if (senserValue['led_status'] == 1) and (senserValue['water_status'] == 1):
       returnValue['led_status'] = {'status': True}
       returnValue['water_status'] = {'status': True}
-      
+
     elif (senserValue['led_status'] == 0) and (senserValue['water_status'] == 1):
       returnValue['led_status'] = {'status': False}
       returnValue['water_status'] = {'status': True}
-      
+
     elif (senserValue['led_status'] == 1) and (senserValue['water_status'] == 0):
       returnValue['led_status'] = {'status': True}
       returnValue['water_status'] = {'status': False}
-      
+
     elif (senserValue['led_status'] == 0) and (senserValue['water_status'] == 0):
       returnValue['led_status'] = {'status': False}
       returnValue['water_status'] = {'status': False}
-      
+
     return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -45,9 +45,10 @@ class temp(View):
   def get(self, request):
     senserValue = recv()
     returnValue = {
-      'status': 0,
+      'status': senserValue['temp_status'],
       'value': senserValue['temp']
     }
+
     return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -55,9 +56,10 @@ class humidity(View):
   def get(self, request):
     senserValue = recv()
     returnValue = {
-      'status': 0,
+      'status': senserValue['humidity_status'],
       'value': senserValue['humidity']
     }
+    
     return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -67,6 +69,7 @@ class led(View):
     returnValue = {
       'value': senserValue['led_status']
     }
+    
     return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -76,6 +79,7 @@ class water(View):
     returnValue = {
       'value': senserValue['water_status']
     }
+    
     return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -98,7 +102,7 @@ class control_water(View):
 class control_led(View):
   def post(self, request):
     try:
-      if request.META['CONTENT_TYPR'] == 'application/json':
+      if request.META['CONTENT_TYPE'] == 'application/json':
         request = json.loads(request.body)
         led_status = request['status']
       else:

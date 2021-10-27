@@ -53,7 +53,9 @@ class MQTT:
     if self.temp == None and self.humidity == None and self.led_status == None and self.water_status == None:
       returnValue = {
         'temp': 0,
+        'temp_status': 0,
         'humidity': 0,
+        'humidity_status': 0,
         'led_status': 0,
         'water_status': 0
       }
@@ -66,4 +68,19 @@ class MQTT:
         'led_status': self.led_status,
         'water_status': self.water_status
       }
+
+      if self.temp < 20:
+        returnValue['temp_status'] = -1
+      elif (self.temp >= 20) and (self.temp <= 25):
+        returnValue['temp_status'] = 0
+      else:
+        returnValue['temp_status'] = 1
+
+      if self.humidity < 40:
+        returnValue['humidity_status'] = -1
+      elif (self.humidity >= 40) and (self.humidity <= 60):
+        returnValue['humidity_status'] = 0
+      else:
+        returnValue['humidity_status'] = 1
+
       return returnValue
