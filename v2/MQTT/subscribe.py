@@ -6,7 +6,7 @@ class MQTT:
   def __init__(self):
     self.broker = '13.209.41.37'
     self.port = 1883
-    self.topic = 'smartfarm_v2/sensor'  # 하드웨어 쪽과 상의 후 추후 변경
+    self.topic = 'HydroponicsSystem/stat'  # 하드웨어 쪽과 상의 후 추후 변경
     self.client = None
 
     # sensor Value
@@ -33,8 +33,8 @@ class MQTT:
       if j:
         self.temp = j['temperature']
         self.humidity = j['humidity']
-        self.led_status = j['led_stat']
-        self.water_status = j['water_stat']
+        self.led_status = j['led']
+        self.water_status = j['waterpump']
         # print('this if got : {}', format(j))  # 가져온 값 출력
       else:
         print('no data...')
