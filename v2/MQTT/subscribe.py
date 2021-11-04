@@ -35,7 +35,7 @@ class MQTT:
         self.humidity = j['humidity']
         self.led_status = j['led']
         self.water_status = j['waterpump']
-        # print('this if got : {}', format(j))  # 가져온 값 출력
+        print('this if got : {}', format(j))  # 가져온 값 출력
       else:
         print('no data...')
     client.subscribe(self.topic)
@@ -50,12 +50,10 @@ class MQTT:
     self.get_data()
 
   def get_data(self):
-    if self.temp == None and self.humidity == None and self.led_status == None and self.water_status == None:
+    if self.temp == None or self.humidity == None or self.led_status == None or self.water_status == None:
       returnValue = {
         'temp': 0,
-        'temp_status': 0,
         'humidity': 0,
-        'humidity_status': 0,
         'led_status': 0,
         'water_status': 0
       }

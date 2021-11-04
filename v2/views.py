@@ -13,11 +13,9 @@ class get_all_sensor(View):
     senserValue = recv()
     returnValue = {
       'temp': {
-        'status': senserValue['temp_status'],  # -1 or 0 or 1 센서 값에 따라 부족, 적당, 높음의 기준을 나눔
         'value': senserValue['temp']
       },
       'humidity': {
-        'status': senserValue['humidity_status'],
         'value': senserValue['humidity']
       }
     }
