@@ -83,18 +83,14 @@ class water(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class control_water(View):
   def post(self, request):
-    try:
-      if request.META['CONTENT_TYPE'] == 'application/json':
-        request = json.loads(request.body)
-        water_status = request['status']
-      else:
-        water_status = request.POST['status']
-      mqtt = mqtt_publish()
-      mqtt.led(water_status)
-      return HttpResponse('OK', status=200)
-    
-    except:
-      return HttpResponse('UNKNOWN SERVER ERROR ACCORDED', status=500)
+    if request.META['CONTENT_TYPE'] == 'application/json':
+      request = json.loads(request.body)
+      water_status = request['status']
+    else:
+      water_status = request.POST['status']
+    mqtt = mqtt_publish()
+    mqtt.led(water_status)
+    return HttpResponse('OK', status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class control_led(View):
