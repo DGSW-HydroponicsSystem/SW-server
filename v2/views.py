@@ -89,7 +89,7 @@ class control_water(View):
     else:
       water_status = request.POST['status']
     mqtt = mqtt_publish()
-    mqtt.led(water_status)
+    mqtt.water(water_status)
     return HttpResponse('OK', status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
