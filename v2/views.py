@@ -26,10 +26,10 @@ class get_all_sensor(View):
                 'value': senserValue['temperature2']
             },
             'led_status': {
-                'status': senserValue['led']
+                'status': senserValue['led_status']
             },
             'water_pump_status': {
-                'status': senserValue['waterpump']
+                'status': senserValue['water_status']
             }
         }
         return JsonResponse(returnValue)
