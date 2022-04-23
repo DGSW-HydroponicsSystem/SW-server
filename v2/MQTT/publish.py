@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import json
 
-broker = '13.209.41.37'                      # mqtt broker ip
+broker = '3.34.123.190'                      # mqtt broker ip
 topic = 'HydroponicsSystem/control'
 
 class mqtt_publish():

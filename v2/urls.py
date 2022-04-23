@@ -4,6 +4,8 @@ from . import views
 app_name = 'v2'
 urlpatterns = [
   path('get_all_sensor/', views.get_all_sensor.as_view(), name='index'),
+  path('user/crops/', views.currCropInfo_API.as_view(), name='index'),
+  path('user/crops/all/', views.cropInfo_all_API.as_view(), name='index'),
   path('humidity/', views.humidity.as_view(), name='index'),
   path('temp/', views.temp.as_view(), name='index'),
   path('led/', views.led.as_view(), name='index'),

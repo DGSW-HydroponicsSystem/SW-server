@@ -9,3 +9,4 @@ class cropModel(models.Model):
 
 class currCrop(models.Model):
     crop = models.ForeignKey('cropModel', on_delete=models.CASCADE, null=False, blank=True)
+
