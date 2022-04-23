@@ -37,3 +37,17 @@ class mqtt_publish():
         'cmd': 'off'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
+
+  def waterpump(self, status):
+    if status == 'true':
+      response = {
+        'type': 'waterPump',
+        'cmd': 'on'
+      }
+      self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
+    elif status == 'false':
+      response = {
+        'type': 'waterPump',
+        'cmd': 'off'
+      }
+      self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
