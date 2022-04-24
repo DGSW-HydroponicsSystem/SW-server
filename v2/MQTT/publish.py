@@ -11,13 +11,13 @@ class mqtt_publish():
     self.mqtt.loop(2)                        # timeout - 2sec
 
   def led(self, status):
-    if status == 'true':
+    if status == 'true' or status == 'True':
       response = {
         'type': 'led',
         'cmd': 'on'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
-    elif status == 'false':
+    elif status == 'false' or status == 'False':
       response = {
         'type': 'led',
         'cmd': 'off'
@@ -25,29 +25,34 @@ class mqtt_publish():
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
 
   def fan(self, status):
-    if status == 'true':
+    if status == 'true' or status == 'True':
       response = {
         'type': 'fan',
         'cmd': 'on'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
-    elif status == 'false':
+    elif status == 'false' or status == 'False':
       response = {
         'type': 'fan',
         'cmd': 'off'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
 
-  def waterpump(self, status):
-    if status == 'true':
+  def waterpump(self, device, status):
+    pumpName = 'waterPump'
+    if str(device) == '1' or str(device) == '1':
+      pumpName = pumpName + str(device)
+    else:
+      raise UnboundLocalError
+    if status == 'true' or status == 'True':
       response = {
-        'type': 'waterPump',
+        'type': pumpName,
         'cmd': 'on'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
-    elif status == 'false':
+    elif status == 'false' or status == 'False':
       response = {
-        'type': 'waterPump',
+        'type': pumpName,
         'cmd': 'off'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
