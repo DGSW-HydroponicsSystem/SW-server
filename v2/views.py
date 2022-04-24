@@ -87,11 +87,11 @@ class get_all_sensor(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
-            'temp_1': sensorValue['temp1'],
-            'temp_2': sensorValue['temp2'],
+            'temp_1': sensorValue['temp_1'],
+            'temp_2': sensorValue['temp_2'],
             'humidity_1': sensorValue['humidity_1'],
             'humidity_2': sensorValue['humidity_2'],
             'sunlight_1': sensorValue['sunlight_1'],
@@ -111,19 +111,19 @@ class get_all_sensor(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class get_all_module_status(View):
     def get(self, request):
-        returnValue = {
-            'led_status': False,
-            'water_pump_status': False,
-            'fan_status': False
-        }
-        try:
-            module_status = moduleStatus.objects.all()
-            module_status = list(module_status)[0]
-        except (ObjectDoesNotExist, IndexError):
-            return JsonResponse(returnValue)
+        # returnValue = {
+        #     'led_status': False,
+        #     'water_pump_status': False,
+        #     'fan_status': False
+        # }
+        # try:
+        #     module_status = moduleStatus.objects.all()
+        #     module_status = list(module_status)[0]
+        # except (ObjectDoesNotExist, IndexError):
+        #     return JsonResponse(returnValue)
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 1:
+            if sensorValue['Key'] == 1:
                 break
         returnValue = {
             'led_status': sensorValue['led_status'],
@@ -142,7 +142,7 @@ class temp(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'temp_1': sensorValue['temp_1'],
@@ -157,7 +157,7 @@ class humidity(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'humidity_1': sensorValue['humidity_1'],
@@ -172,7 +172,7 @@ class sunlight(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'sunlight_1': sensorValue['sunlight_1'],
@@ -187,7 +187,7 @@ class water_temp(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'water_temp_1': sensorValue['water_temp_1'],
@@ -202,7 +202,7 @@ class water_level(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'water_level': sensorValue['water_level']
@@ -216,7 +216,7 @@ class water_ph(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 0:
+            if sensorValue['Key'] == 0:
                 break
         returnValue = {
             'water_ph': sensorValue['water_ph']
@@ -230,7 +230,7 @@ class led(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 1:
+            if sensorValue['Key'] == 1:
                 break
         returnValue = {
             'led_status': sensorValue['led_status']
@@ -258,7 +258,7 @@ class waterpump(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 1:
+            if sensorValue['Key'] == 1:
                 break
         returnValue = {
             'water_pump_status': sensorValue['water_pump_status']
@@ -285,7 +285,7 @@ class fan(View):
     def get(self, request):
         while True:
             sensorValue = recv()
-            if get_all_sensor['Key'] is 1:
+            if sensorValue['Key'] == 1:
                 break
         returnValue = {
             'fan_status': sensorValue['fan_status']

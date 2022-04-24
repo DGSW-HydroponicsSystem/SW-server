@@ -76,6 +76,7 @@ class MQTT:
 
     def get_data(self):
         returnValue_Key0 = {
+            'Key': 0,
             'temp_1': {'value': 0},
             'temp_2': {'value': 0},
             'humidity_1': {'value': 0},
@@ -88,21 +89,24 @@ class MQTT:
             'water_ph': {'value': 0.0},
         }
         returnValue_Key1 = {
+            'Key': 1,
             'led_status': {'value': False},
             'water_pump_status': {'value': False},
             'fan_status': {'value': False}
         }
 
         if self.Key == 1:
+            returnValue_Key1['Key'] = self.Key
             returnValue_Key1['led_status']['value'] = True if self.led_status == 1 else False
             returnValue_Key1['water_pump_status']['value'] = True if self.pump_status == 1 else False
             returnValue_Key1['fan_status']['value'] = True if self.fan_status == 1 else False
 
             return returnValue_Key1
         else:
-            returnValue_Key0['temp_1']['value'] = self.Key
+            returnValue_Key0['Key'] = self.Key
+            returnValue_Key0['temp_1']['value'] = self.temperature1
             returnValue_Key0['temp_2']['value'] = self.temperature2
-            returnValue_Key0['humidity_1']['value'] = self.humidity2
+            returnValue_Key0['humidity_1']['value'] = self.humidity1
             returnValue_Key0['humidity_2']['value'] = self.humidity2
             returnValue_Key0['sunlight_1']['value'] = self.sunlight1
             returnValue_Key0['sunlight_2']['value'] = self.sunlight2
