@@ -148,6 +148,6 @@ class MQTT_MODULE:
     def get_data(self):
         self.returnValue_Key1['led_status']['value'] = True if self.led_status == 1 else False
         self.returnValue_Key1['water_pump_status_1']['value'] = True if self.pump_status_1 == 1 else False
-        self.returnValue_Key1['water_pump_status_2']['value'] = True if self.pump_status_1 == 1 else False
+        self.returnValue_Key1['water_pump_status_2']['value'] = True if self.pump_status_2 == 1 else False
         self.returnValue_Key1['fan_status']['value'] = True if self.fan_status == 1 else False
         return self.returnValue_Key1

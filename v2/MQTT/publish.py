@@ -40,7 +40,7 @@ class mqtt_publish():
 
   def waterpump(self, device, status):
     pumpName = 'waterPump'
-    if str(device) == '1' or str(device) == '1':
+    if str(device) == '1' or str(device) == '2':
       pumpName = pumpName + str(device)
     else:
       raise UnboundLocalError
