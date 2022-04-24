@@ -85,17 +85,19 @@ class currCropInfo_API(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class get_all_sensor(View):
     def get(self, request):
-        sensorValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'humidity_1': sensorValue['humidity1'],
-            'humidity_2': sensorValue['humidity2'],
-            'temp_1': sensorValue['temperature1'],
-            'temp_2': sensorValue['temperature2'],
-            'led_status': sensorValue['led_status'],
-            'water_pump_status': sensorValue['water_status'],
-            'fan_status': sensorValue['fan_status'],
-            'sunlight': sensorValue['sunlight'],
-            'water_temp': sensorValue['water_temp'],
+            'temp_1': sensorValue['temp1'],
+            'temp_2': sensorValue['temp2'],
+            'humidity_1': sensorValue['humidity_1'],
+            'humidity_2': sensorValue['humidity_2'],
+            'sunlight_1': sensorValue['sunlight_1'],
+            'sunlight_2': sensorValue['sunlight_2'],
+            'water_temp_1': sensorValue['water_temp_1'],
+            'water_temp_2': sensorValue['water_temp_2'],
             'water_level': sensorValue['water_level'],
             'water_ph': sensorValue['water_ph']
         }
@@ -106,14 +108,45 @@ class get_all_sensor(View):
         }
         return JsonResponse(returnValue)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class get_all_module_status(View):
+    def get(self, request):
+        returnValue = {
+            'led_status': False,
+            'water_pump_status': False,
+            'fan_status': False
+        }
+        try:
+            module_status = moduleStatus.objects.all()
+            module_status = list(module_status)[0]
+        except (ObjectDoesNotExist, IndexError):
+            return JsonResponse(returnValue)
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 1:
+                break
+        returnValue = {
+            'led_status': sensorValue['led_status'],
+            'water_pump_status': sensorValue['water_status'],
+            'fan_status': sensorValue['fan_status'],
+        }
+        returnValue = {
+            "status": 200,
+            "detail": "OK",
+            "data": returnValue
+        }
+        return JsonResponse(returnValue)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class temp(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'status': senserValue['temp_status'],
-            'value': senserValue['temp']
+            'temp_1': sensorValue['temp_1'],
+            'temp_2': sensorValue['temp_1'],
         }
 
         return JsonResponse(returnValue)
@@ -122,32 +155,13 @@ class temp(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class humidity(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'status': senserValue['humidity_status'],
-            'value': senserValue['humidity']
-        }
-
-        return JsonResponse(returnValue)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class led(View):
-    def get(self, request):
-        senserValue = recv()
-        returnValue = {
-            'value': senserValue['led_status']
-        }
-
-        return JsonResponse(returnValue)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class water(View):
-    def get(self, request):
-        senserValue = recv()
-        returnValue = {
-            'value': senserValue['water_status']
+            'humidity_1': sensorValue['humidity_1'],
+            'humidity_2': sensorValue['humidity_2']
         }
 
         return JsonResponse(returnValue)
@@ -156,41 +170,28 @@ class water(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class sunlight(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'value': senserValue['sunlight']
+            'sunlight_1': sensorValue['sunlight_1'],
+            'sunlight_2': sensorValue['sunlight_2']
         }
 
         return JsonResponse(returnValue)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class waterpump(View):
-    def get(self, request):
-        senserValue = recv()
-        returnValue = {
-            'value': bool(senserValue['waterpump'])
-        }
-
-        return JsonResponse(returnValue)
-
-    def post(self, request):
-        if request.META['CONTENT_TYPE'] == 'application/json':
-            request = json.loads(request.body)
-            pump_status = request['status']
-        else:
-            pump_status = request.POST['status']
-        mqtt = mqtt_publish()
-        mqtt.water(pump_status)
-        return HttpResponse('OK', status=200)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class water_temp(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'value': int(senserValue['water_temp'])
+            'water_temp_1': sensorValue['water_temp_1'],
+            'water_temp_2': sensorValue['water_temp_2']
         }
 
         return JsonResponse(returnValue)
@@ -199,9 +200,12 @@ class water_temp(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class water_level(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'value': int(senserValue['water_level'])
+            'water_level': sensorValue['water_level']
         }
 
         return JsonResponse(returnValue)
@@ -210,29 +214,30 @@ class water_level(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class water_ph(View):
     def get(self, request):
-        senserValue = recv()
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 0:
+                break
         returnValue = {
-            'value': float(senserValue['water_ph'])
+            'water_ph': sensorValue['water_ph']
         }
 
         return JsonResponse(returnValue)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class control_water(View):
-    def post(self, request):
-        if request.META['CONTENT_TYPE'] == 'application/json':
-            request = json.loads(request.body)
-            water_status = request['status']
-        else:
-            water_status = request.POST['status']
-        mqtt = mqtt_publish()
-        mqtt.water(water_status)
-        return HttpResponse('OK', status=200)
+class led(View):
+    def get(self, request):
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 1:
+                break
+        returnValue = {
+            'led_status': sensorValue['led_status']
+        }
 
+        return JsonResponse(returnValue)
 
-@method_decorator(csrf_exempt, name='dispatch')
-class control_led(View):
     def post(self, request):
         try:
             if request.META['CONTENT_TYPE'] == 'application/json':
@@ -244,5 +249,60 @@ class control_led(View):
             mqtt.led(led_status)
             return HttpResponse('OK', status=200)
 
-        except:
+        except Exception as E:
+            return HttpResponse('UNKNOWN SERVER ERROR ACCORDED', status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class waterpump(View):
+    def get(self, request):
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 1:
+                break
+        returnValue = {
+            'water_pump_status': sensorValue['water_pump_status']
+        }
+
+        return JsonResponse(returnValue)
+
+    def post(self, request):
+        try:
+            if request.META['CONTENT_TYPE'] == 'application/json':
+                request = json.loads(request.body)
+                pump_status = request['status']
+            else:
+                pump_status = request.POST['status']
+            mqtt = mqtt_publish()
+            mqtt.waterpump(pump_status)
+            return HttpResponse('OK', status=200)
+        except Exception as E:
+            return HttpResponse('UNKNOWN SERVER ERROR ACCORDED', status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class fan(View):
+    def get(self, request):
+        while True:
+            sensorValue = recv()
+            if get_all_sensor['Key'] is 1:
+                break
+        returnValue = {
+            'fan_status': sensorValue['fan_status']
+        }
+
+        return JsonResponse(returnValue)
+
+    def post(self, request):
+        try:
+            if request.META['CONTENT_TYPE'] == 'application/json':
+                request = json.loads(request.body)
+                fan_status = request['status']
+            else:
+                fan_status = request.POST['status']
+            mqtt = mqtt_publish()
+            mqtt.fan(fan_status)
+            return HttpResponse('OK', status=200)
+
+        except Exception as E:
             return HttpResponse('UNKNOWN SERVER ERROR ACCORDED', status=500)

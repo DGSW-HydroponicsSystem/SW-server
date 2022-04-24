@@ -11,16 +11,20 @@ class MQTT:
         self.client = None
 
         # sensor Value
-        self.temperature1 = None
-        self.temperature2 = None
-        self.humidity1 = None
-        self.humidity2 = None
-        self.led_status = None
-        self.water_status = None
-        self.sunlight = None
-        self.water_temp = None
-        self.water_level = None
-        self.water_ph = None
+        self.Key = int()
+        self.temperature1 = int()
+        self.temperature2 = int()
+        self.humidity1 = int()
+        self.humidity2 = int()
+        self.sunlight1 = int()
+        self.sunlight2 = int()
+        self.water_temp1 = int()
+        self.water_temp2 = int()
+        self.water_level = int()
+        self.water_ph = float()
+        self.led_status = int()
+        self.pump_status = int()
+        self.fan_status = int()
 
 
     def connect_mqtt(self) -> mqtt:
@@ -40,18 +44,22 @@ class MQTT:
             recv = msg.payload.decode()
             data = json.loads(recv)
             if data:
-                self.temperature1 = data['temperature1']
-                self.temperature2 = data['temperature2']
-                self.humidity1 = data['humidity1']
-                self.humidity2 = data['humidity2']
-                self.led_status = data['led']
-                self.water_status = data['waterpump']
-                self.fan_status = data['fan']
-                self.sunlight = data['sunlight']
-                self.water_temp = data['watertemp']
-                self.water_level = data['waterlevel']
-                self.water_ph = data['waterph']
-                # print('this if got : {}', format(j))  # 가져온 값 출력
+                self.Key = data['Key']
+                if self.Key == 0:
+                    self.temperature1 = data['temperature1']
+                    self.temperature2 = data['temperature2']
+                    self.humidity1 = data['humidity1']
+                    self.humidity2 = data['humidity2']
+                    self.sunlight1 = data['sunlight1']
+                    self.sunlight2 = data['sunlight2']
+                    self.water_temp1 = data['watertemp1']
+                    self.water_temp2 = data['watertemp2']
+                    self.water_level = data['waterlevel']
+                    self.water_ph = data['waterph']
+                else:
+                    self.led_status = data['ledstat']
+                    self.pump_status = data['waterpumpstat']
+                    self.fan_status = data['fanstat']
             else:
                 print('no data...')
 
@@ -67,26 +75,40 @@ class MQTT:
         self.get_data()
 
     def get_data(self):
-        if self.temperature1 == None or self.temperature2 == None or self.humidity1 == None or \
-            self.humidity2 == None or self.led_status == None or self.water_status == None or \
-            self.sunlight == None or self.water_temp == None or self.water_level == None or \
-            self.water_ph == None:
-            returnValue = {
-                'temperature1': {'value': 0},
-                'temperature2': {'value': 0},
-                'humidity1': {'value': 0},
-                'humidity2': {'value': 0},
-                'led_status': {'status': False},
-                'water_status': {'status': False}
-            }
-        else:
-            returnValue = {
-                'temperature1': {'value': self.temperature2},
-                'temperature2': {'value': self.temperature2},
-                'humidity1': {'value': self.humidity2},
-                'humidity2': {'value': self.humidity2},
-                'led_status': {'status': True if self.led_status else False},
-                'water_status': {'status': True if self.water_status else False}
-            }
+        returnValue_Key0 = {
+            'temp_1': {'value': 0},
+            'temp_2': {'value': 0},
+            'humidity_1': {'value': 0},
+            'humidity_2': {'value': 0},
+            'sunlight_1': {'value': 0},
+            'sunlight_2': {'value': 0},
+            'water_temp_1': {'value': 0},
+            'water_temp_2': {'value': 0},
+            'water_level': {'value': 0},
+            'water_ph': {'value': 0.0},
+        }
+        returnValue_Key1 = {
+            'led_status': {'value': False},
+            'water_pump_status': {'value': False},
+            'fan_status': {'value': False}
+        }
 
-        return returnValue
+        if self.Key == 1:
+            returnValue_Key1['led_status']['value'] = True if self.led_status == 1 else False
+            returnValue_Key1['water_pump_status']['value'] = True if self.pump_status == 1 else False
+            returnValue_Key1['fan_status']['value'] = True if self.fan_status == 1 else False
+
+            return returnValue_Key1
+        else:
+            returnValue_Key0['temp_1']['value'] = self.Key
+            returnValue_Key0['temp_2']['value'] = self.temperature2
+            returnValue_Key0['humidity_1']['value'] = self.humidity2
+            returnValue_Key0['humidity_2']['value'] = self.humidity2
+            returnValue_Key0['sunlight_1']['value'] = self.sunlight1
+            returnValue_Key0['sunlight_2']['value'] = self.sunlight2
+            returnValue_Key0['water_temp_1']['value'] = self.water_temp1
+            returnValue_Key0['water_temp_2']['value'] = self.water_temp2
+            returnValue_Key0['water_level']['value'] = self.water_level
+            returnValue_Key0['water_ph']['value'] = self.water_ph
+
+            return returnValue_Key0

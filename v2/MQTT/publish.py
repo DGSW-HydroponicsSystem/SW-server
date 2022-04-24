@@ -24,16 +24,16 @@ class mqtt_publish():
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
 
-  def water(self, status):
+  def fan(self, status):
     if status == 'true':
       response = {
-        'type': 'waterPump',
+        'type': 'fan',
         'cmd': 'on'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행
     elif status == 'false':
       response = {
-        'type': 'waterPump',
+        'type': 'fan',
         'cmd': 'off'
       }
       self.mqtt.publish(topic, json.dumps(response).encode())   # topic & message 발행

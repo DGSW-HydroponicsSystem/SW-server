@@ -10,3 +10,7 @@ class cropModel(models.Model):
 class currCrop(models.Model):
     crop = models.ForeignKey('cropModel', on_delete=models.CASCADE, null=False, blank=True)
 
+class moduleStatus(models.Model):
+    led = models.BooleanField(default=False)
+    pump = models.BooleanField(default=False)
+    fan = models.BooleanField(default=False)
